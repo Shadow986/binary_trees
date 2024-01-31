@@ -6,15 +6,15 @@
  * @tree: tree to check
  * Return: 0 if is not a perfect or other number that is the level of height
  */
-int binary_tree_is_perfect(const binary_tree_t *tree)
+int binary_tree_is_perfect_recursive(const binary_tree_t *tree)
 {
 
 int l = 0, r = 0;
 
 	if (tree->left && tree->right)
 	{
-		l = 1 + tree_is_perfect(tree->left);
-		r = 1 + tree_is_perfect(tree->right);
+		l = 1 + binary_tree_is_perfect(tree->left);
+		r = 1 + binary_tree_is_perfect(tree->right);
 		if (r == l && r != 0 && l != 0)
 			return (r);
 		return (0);
@@ -43,7 +43,7 @@ int binary_tree_is_perfect(const binary_tree_t *tree)
 	}
 	else
 	{
-		result = tree_is_perfect(tree);
+		result = binary_tree_is_perfect(tree);
 		if (result != 0)
 		{
 			return (1);
