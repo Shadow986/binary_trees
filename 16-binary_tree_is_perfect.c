@@ -9,26 +9,26 @@
  */
 int binary_tree_is_perfect_recursive(const binary_tree_t *tree)
 {
-    int l = 0, r = 0;
+	int l = 0, r = 0;
 
-    if (tree->left && tree->right)
-    {
-        l = 1 + binary_tree_is_perfect_recursive(tree->left);
-        r = 1 + binary_tree_is_perfect_recursive(tree->right);
+	if (tree->left && tree->right)
+	{
+	l = 1 + binary_tree_is_perfect_recursive(tree->left);
+	r = 1 + binary_tree_is_perfect_recursive(tree->right);
 
-        if (r == l && r != 0 && l != 0)
-            return (r);
+	if (r == l && r != 0 && l != 0)
+	return (r);
 
-        return (0);
-    }
-    else if (!tree->left && !tree->right)
-    {
-        return (1);
-    }
-    else
-    {
-        return (0);
-    }
+	return (0);
+	}
+	else if (!tree->left && !tree->right)
+	{
+	return (1);
+	}
+	else
+	{
+	return (0);
+	}
 }
 
 /**
@@ -38,8 +38,8 @@ int binary_tree_is_perfect_recursive(const binary_tree_t *tree)
  */
 int binary_tree_is_perfect(const binary_tree_t *tree)
 {
-    if (tree == NULL)
-        return (0);
+	if (tree == NULL)
+	return (0);
 
-    return binary_tree_is_perfect_recursive(tree);
+	return binary_tree_is_perfect_recursive(tree);
 }
