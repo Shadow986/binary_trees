@@ -1,100 +1,66 @@
-/**
- * heap_extract - extracts the root node of a Max Binary Heap
- *
- * @root: double pointer to the root node of the heap
- *
- * Return: the value stored in the root node, or 0 on failure
- */
-int heap_extract(heap_t **root)
-{
-	if (root == NULL || *root == NULL)
-	return (0);
-
-	int value = (*root)->n;
-
-	heap_t *last_node = get_last_node(*root);
-
-	if (*root == last_node)
-	{
-	free(*root);
-	*root = NULL;
-	return (value);
-	}
-
-	swap_values(&((*root)->n), &(last_node->n));
-
-	if (last_node->parent->left == last_node)
-	last_node->parent->left = NULL;
-	else
-	last_node->parent->right = NULL;
-
-	free(last_node);
-
-	heapify_down(*root);
-
-	return (value);
-}
+#include <stdlib.h>
+#include "binary_trees.h"
 
 /**
- * get_last_node - gets the last node in a binary tree
+ * heap_insert - inserts a value in Max Binary Heap
  *
- * @root: pointer to the root node of the tree
+ * @root: double pointer to the root node of the Heap to insert the value
+ * @value: the value to store in the node to be inserted
  *
- * Return: a pointer to the last node
+ * Return: a pointer to the created node, or NULL on failure
  */
-heap_t *get_last_node(heap_t *root)
+heap_t *heap_insert(heap_t **root, int value)
 {
-	if (root == NULL)
+	heap_t *new_node = binary_tree_node(*root, value);
+	heap_t *parent, *current;
+
+	if (new_node == NULL)
 	return (NULL);
 
-	while (root->left != NULL || root->right != NULL)
+	if (*root == NULL)
 	{
-	if (root->right != NULL)
-	root = root->right;
+	*root = new_node;
+	return (new_node);
+	}
+
+	current = *root;
+	while (current != NULL)
+	{
+	parent = current;
+	if (value > current->n)
+	current = current->right;
 	else
-	root = root->left;
+	current = current->left;
 	}
 
-	return (root);
+	if (value > parent->n)
+	parent->right = new_node;
+	else
+	parent->left = new_node;
+
+	new_node->parent = parent;
+
+	heapify_up(new_node);
+
+	return (new_node);
 }
 
 /**
- * heapify_down - restores the Max Heap property after extracting the root node
+ * heapify_up - restores the Max Heap property after inserting a new node
  *
- * @root: pointer to the root node of the heap
+ * @node: pointer to the node to heapify up
  */
-void heapify_down(heap_t *root)
+void heapify_up(heap_t *node)
 {
-	heap_t *largest = root;
+	heap_t *parent;
+	int temp;
 
-	while (1)
+	while (node->parent != NULL && node->n > node->parent->n)
 	{
-	heap_t *left = root->left;
-	heap_t *right = root->right;
-
-	if (left != NULL && left->n > largest->n)
-	largest = left;
-
-	if (right != NULL && right->n > largest->n)
-	largest = right;
-
-	if (largest == root)
-	break;
-
-	swap_values(&(root->n), &(largest->n));
-	root = largest;
+	parent = node->parent;
+	temp = parent->n;
+	parent->n = node->n;
+	node->n = temp;
+	node = parent;
 	}
-}
-
-/**
- * swap_values - swaps the values of two integers
- *
- * @a: pointer to the first integer
- * @b: pointer to the second integer
- */
-void swap_values(int *a, int *b)
-{
-	int temp = *a;
-	*a = *b;
-	*b = temp;
 }
