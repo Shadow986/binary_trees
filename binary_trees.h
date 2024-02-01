@@ -63,5 +63,7 @@ void binary_tree_inorder(const binary_tree_t *tree, void (*func)(int));
 void binary_tree_postorder(const binary_tree_t *tree, void (*func)(int));
 int binary_tree_is_bst(const binary_tree_t *tree);
 int bst_helper(const binary_tree_t *tree, int min, int max);
+bst_t *bst_insert(bst_t **tree, int value);
+
 
 #endif
